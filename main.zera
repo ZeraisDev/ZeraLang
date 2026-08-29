@@ -1,0 +1,12 @@
+import "math_utils.zera"
+
+func greet(name) {
+    return "Hello, " + name
+}
+
+// Now both files are fully loaded. We can safely call functions from either!
+result = do_math(10)
+show "Main says: " + str(result)
+
+// Call the function from math_utils that uses greet()
+test_greet()

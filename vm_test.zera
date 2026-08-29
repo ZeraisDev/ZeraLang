@@ -1,0 +1,11 @@
+x = 10
+y = 20
+sum = x + y
+show sum
+show "The result is: " + str(sum)
+
+// Note: str() is a built-in, which we haven't added to the VM yet.
+// It will push Null for now. So let's just do math:
+show 5 * (3 + 2) - 10
+show -50
+show not true

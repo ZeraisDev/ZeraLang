@@ -1,0 +1,15 @@
+show "Starting Zeralang benchmark..."
+
+start = time()
+total = 0
+i = 1000000
+
+while (i > 0) {
+    total += i
+    i -= 1
+}
+
+show total
+finish = time()
+elapsed = finish - start
+show "Zeralang Time: " + str(elapsed)

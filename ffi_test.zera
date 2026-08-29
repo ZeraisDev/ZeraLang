@@ -1,0 +1,8 @@
+show "Loading C library..."
+math = load_library("c_module/libmath_ext.dylib")
+
+show "Calling C function..."
+input_str = "12"
+response = math.square_and_prefix(input_str)
+
+show "C returned: " + response

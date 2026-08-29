@@ -1,0 +1,18 @@
+show "Loading C HTTP Module..."
+http = load_library("c_module/libhttp_ext.dylib")
+
+show "Module loaded! Type 'module' to see it:"
+show http
+
+show "========================"
+query = ask("Enter search query: ")
+// Use DuckDuckGo's HTML-only version because Google blocks scripts
+url = "https://html.duckduckgo.com/html/?q=" + query
+
+show "Fetching results from the internet via C..."
+html = http.zera_http_get(url)
+show html
+show "========================"
+show "Downloaded " + str(length html) + " characters of HTML!"
+show "Does the page contain your query? " + str(contains(html, query))
+show "Success! Zeralang talked to the internet using a C library."

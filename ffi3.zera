@@ -1,0 +1,30 @@
+show "=== Level 3 FFI: Raw Memory Management ==="
+
+buffer_lib = load_library("c_module/libbuffer_ext.dylib")
+
+show "Allocating 100x100 buffer in C..."
+// Because the function ends with _ptr, Zeralang knows this returns a memory address!
+my_buffer = buffer_lib.zera_create_buffer_ptr(100, 100)
+
+show "Buffer allocated at address:"
+show my_buffer
+
+show "Setting pixel at (10, 20) to color 255..."
+// Pass the pointer back to C to mutate the memory
+buffer_lib.zera_set_pixel(my_buffer, 10, 20, 255)
+
+show "Reading pixel back from (10, 20)..."
+color = buffer_lib.zera_get_pixel(my_buffer, 10, 20)
+show "Color is: " + str(color)
+
+show "Reading empty pixel at (0, 0)..."
+empty_color = buffer_lib.zera_get_pixel(my_buffer, 0, 0)
+show "Color is: " + str(empty_color)
+
+show "Freeing C memory to prevent leaks..."
+buffer_lib.zera_free_buffer(my_buffer)
+
+// Null out the pointer in Zeralang to prevent use-after-free
+my_buffer = null
+
+show "Memory freed. Level 3 FFI complete!"

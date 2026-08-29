@@ -1,0 +1,21 @@
+show "=== Level 2 FFI Test ==="
+
+math = load_library("c_module/libmath_ext.dylib")
+
+// 1 Number Arg
+show "Sqrt of 144 is:"
+show math.zera_sqrt(170)
+
+// 2 Number Args
+show "Hypotenuse of 3 and 4 is:"
+show math.zera_hypot(3, 4.798)
+
+// String + Number Args
+show "Repeating 'Zera' 3 times:"
+show math.zera_repeat("Zera", 3)
+
+// String + 2 Number Args
+show "Substring of 'Hello World' from 0 to 5:"
+show math.zera_substring("Hello World", 0, 5)
+
+show "========================"
