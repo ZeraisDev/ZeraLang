@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 libloading = "0.8"
+serde_json = "1.0"

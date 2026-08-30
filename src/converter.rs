@@ -36,7 +36,13 @@ fn stmt_read(stmt: &Stmt, indent: usize) -> String {
             format!("{}set {} to {}", ind, name, expr_read(expr))
         }
         Stmt::SetField(target, field, value) => {
-            format!("{}set {}.{} to {}", ind, expr_read(target), field, expr_read(value))
+            format!(
+                "{}set {}.{} to {}",
+                ind,
+                expr_read(target),
+                field,
+                expr_read(value)
+            )
         }
         Stmt::Show(expr) => {
             format!("{}show {}", ind, expr_read(expr))
@@ -153,7 +159,13 @@ fn stmt_write(stmt: &Stmt, indent: usize) -> String {
             format!("{}{} = {}", ind, name, expr_write(expr))
         }
         Stmt::SetField(target, field, value) => {
-            format!("{}{}.{} = {}", ind, expr_write(target), field, expr_write(value))
+            format!(
+                "{}{}.{} = {}",
+                ind,
+                expr_write(target),
+                field,
+                expr_write(value)
+            )
         }
         Stmt::Show(expr) => {
             format!("{}show {}", ind, expr_write(expr))
@@ -271,7 +283,12 @@ fn block_write(stmts: &[Stmt], indent: usize) -> String {
 fn expr_read(expr: &Expr) -> String {
     match expr {
         Expr::Ternary(cond, then_expr, else_expr) => {
-            format!("{} ? {} : {}", expr_read(cond), expr_read(then_expr), expr_read(else_expr))
+            format!(
+                "{} ? {} : {}",
+                expr_read(cond),
+                expr_read(then_expr),
+                expr_read(else_expr)
+            )
         }
         Expr::Lambda(params, body) => {
             let params_str = params.join(", ");
@@ -310,7 +327,8 @@ fn expr_read(expr: &Expr) -> String {
                     0 => format!("{}()", name),
                     1 => format!("{} {}", name, expr_read(&args[0])),
                     _ => {
-                        let args_str = args.iter()
+                        let args_str = args
+                            .iter()
                             .map(expr_read)
                             .collect::<Vec<_>>()
                             .join(" with ");
@@ -318,15 +336,17 @@ fn expr_read(expr: &Expr) -> String {
                     }
                 }
             } else {
-                let args_str = args.iter().map(expr_read)
-                    .collect::<Vec<_>>().join(", ");
+                let args_str = args.iter().map(expr_read).collect::<Vec<_>>().join(", ");
                 format!("{}({})", expr_read(callee), args_str)
             }
         }
 
         Expr::Array(elements) => {
-            let elems = elements.iter().map(expr_read)
-                .collect::<Vec<_>>().join(", ");
+            let elems = elements
+                .iter()
+                .map(expr_read)
+                .collect::<Vec<_>>()
+                .join(", ");
             format!("[{}]", elems)
         }
 
@@ -339,9 +359,11 @@ fn expr_read(expr: &Expr) -> String {
         }
 
         Expr::Dict(pairs) => {
-            let pairs_str = pairs.iter()
+            let pairs_str = pairs
+                .iter()
                 .map(|(k, v)| format!("{}: {}", expr_read(k), expr_read(v)))
-                .collect::<Vec<_>>().join(", ");
+                .collect::<Vec<_>>()
+                .join(", ");
             format!("{{{}}}", pairs_str)
         }
     }
@@ -350,7 +372,12 @@ fn expr_read(expr: &Expr) -> String {
 fn expr_write(expr: &Expr) -> String {
     match expr {
         Expr::Ternary(cond, then_expr, else_expr) => {
-            format!("{} ? {} : {}", expr_write(cond), expr_write(then_expr), expr_write(else_expr))
+            format!(
+                "{} ? {} : {}",
+                expr_write(cond),
+                expr_write(then_expr),
+                expr_write(else_expr)
+            )
         }
         Expr::Lambda(params, body) => {
             let params_str = params.join(", ");
@@ -384,14 +411,16 @@ fn expr_write(expr: &Expr) -> String {
         }
 
         Expr::Call(callee, args) => {
-            let args_str = args.iter().map(expr_write)
-                .collect::<Vec<_>>().join(", ");
+            let args_str = args.iter().map(expr_write).collect::<Vec<_>>().join(", ");
             format!("{}({})", expr_write(callee), args_str)
         }
 
         Expr::Array(elements) => {
-            let elems = elements.iter().map(expr_write)
-                .collect::<Vec<_>>().join(", ");
+            let elems = elements
+                .iter()
+                .map(expr_write)
+                .collect::<Vec<_>>()
+                .join(", ");
             format!("[{}]", elems)
         }
 
@@ -404,9 +433,11 @@ fn expr_write(expr: &Expr) -> String {
         }
 
         Expr::Dict(pairs) => {
-            let pairs_str = pairs.iter()
+            let pairs_str = pairs
+                .iter()
                 .map(|(k, v)| format!("{}: {}", expr_write(k), expr_write(v)))
-                .collect::<Vec<_>>().join(", ");
+                .collect::<Vec<_>>()
+                .join(", ");
             format!("{{{}}}", pairs_str)
         }
     }
@@ -460,8 +491,13 @@ fn prec(op: &Token) -> u8 {
     match op {
         Token::Or => 1,
         Token::And => 2,
-        Token::Greater | Token::GreaterEq | Token::Less
-        | Token::LessEq | Token::EqEq | Token::NotEq | Token::Is => 3,
+        Token::Greater
+        | Token::GreaterEq
+        | Token::Less
+        | Token::LessEq
+        | Token::EqEq
+        | Token::NotEq
+        | Token::Is => 3,
         Token::Plus | Token::Minus => 4,
         Token::Star | Token::Slash | Token::Percent => 5,
         _ => 10,
