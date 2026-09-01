@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*' # Triggers when you push a tag like "v1.0.0"
 
+permissions:
+  contents: write # Required to give the token permission to create the release
+
 jobs:
   build:
     name: Build for ${{ matrix.os }}
@@ -32,11 +35,13 @@ jobs:
       - name: Build release
         run: cargo build --release
 
+      # Rename the file so it has a clear name for the release
+      - name: Rename binary
+        shell: bash
+        run: |
+          mv target/release/${{ matrix.artifact_name }} target/release/${{ matrix.asset_name }}
+
       - name: Upload binary to release
-        uses: svenstaro/upload-release-action@v2
+        uses: softprops/action-gh-release@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/release/${{ matrix.artifact_name }}
-          asset_name: ${{ matrix.asset_name }}
-          tag: ${{ github.ref_name }}
-          overwrite: true
+          files: target/release/${{ matrix.asset_name }}
