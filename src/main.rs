@@ -855,50 +855,6 @@ impl Parser {
             }
 
             Token::Ident(_) => {
-                let name = if let Some(Token::Ident(n)) = self.peek() {
-                    n.clone()
-                } else {
-                    String::new()
-                };
-
-                // Compound assignment (+=, -=, etc.)
-                if matches!(
-                    self.peek_next(),
-                    Some(Token::PlusEq)
-                        | Some(Token::MinusEq)
-                        | Some(Token::StarEq)
-                        | Some(Token::SlashEq)
-                        | Some(Token::PercentEq)
-                ) {
-                    self.advance();
-                    let op_token = self.advance().unwrap();
-                    let value_expr = self.parse_expression();
-
-                    let bin_op = match op_token {
-                        Token::PlusEq => Token::Plus,
-                        Token::MinusEq => Token::Minus,
-                        Token::StarEq => Token::Star,
-                        Token::SlashEq => Token::Slash,
-                        Token::PercentEq => Token::Percent,
-                        _ => unreachable!(),
-                    };
-
-                    let expr = Expr::BinOp(
-                        Box::new(Expr::Ident(name.clone())),
-                        bin_op,
-                        Box::new(value_expr),
-                    );
-                    return Stmt::Set(name, expr);
-                }
-
-                // Standard assignment: x = value
-                if self.peek_next() == Some(&Token::Equals) {
-                    self.advance();
-                    self.advance();
-                    let value = self.parse_expression();
-                    return Stmt::Set(name, value);
-                }
-
                 // Fall through: expression or field assignment
                 self.parse_expr_statement()
             }
@@ -1097,16 +1053,60 @@ impl Parser {
     /// Parse an expression, then check if it's followed by `=` for field assignment.
     fn parse_expr_statement(&mut self) -> Stmt {
         let expr = self.parse_expression();
+
+        // Standard Assignment: x = value  OR  obj.field = value
         if let Some(Token::Equals) = self.peek() {
             self.advance();
             let value = self.parse_expression();
+
+            if let Expr::Ident(name) = &expr {
+                return Stmt::Set(name.clone(), value);
+            }
             if let Expr::Index(target, key) = &expr {
                 if let Expr::String(field_name) = key.as_ref() {
                     return Stmt::SetField(target.clone(), field_name.clone(), value);
                 }
             }
-            self.error("Invalid assignment target (expected obj.field = value)");
+            self.error("Invalid assignment target (expected x = value or obj.field = value)");
         }
+
+        // Compound Assignment: x += value  OR  obj.field += value
+        if matches!(self.peek(),
+            Some(Token::PlusEq) | Some(Token::MinusEq) |
+            Some(Token::StarEq) | Some(Token::SlashEq) |
+            Some(Token::PercentEq)
+        ) {
+            let op_token = self.advance().unwrap();
+            let value_expr = self.parse_expression();
+
+            let bin_op = match op_token {
+                Token::PlusEq => Token::Plus,
+                Token::MinusEq => Token::Minus,
+                Token::StarEq => Token::Star,
+                Token::SlashEq => Token::Slash,
+                Token::PercentEq => Token::Percent,
+                _ => unreachable!(),
+            };
+
+            // Construct the binary operation: target + value
+            let new_value = Expr::BinOp(
+                Box::new(expr.clone()),
+                bin_op,
+                Box::new(value_expr)
+            );
+
+            // Assign it back to the target
+            if let Expr::Ident(name) = &expr {
+                return Stmt::Set(name.clone(), new_value);
+            }
+            if let Expr::Index(target, key) = &expr {
+                if let Expr::String(field_name) = key.as_ref() {
+                    return Stmt::SetField(target.clone(), field_name.clone(), new_value);
+                }
+            }
+            self.error("Invalid compound assignment target (expected x += value or obj.field += value)");
+        }
+
         Stmt::ExprStmt(expr)
     }
 
