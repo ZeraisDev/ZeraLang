@@ -16,13 +16,13 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            artifact_name: zeralang
+            artifact_name: zera_lang
             asset_name: zeralang-linux-amd64
           - os: windows-latest
-            artifact_name: zeralang.exe
+            artifact_name: zera_lang.exe
             asset_name: zeralang-windows-amd64.exe
           - os: macos-latest
-            artifact_name: zeralang
+            artifact_name: zera_lang
             asset_name: zeralang-macos-amd64
 
     steps:
