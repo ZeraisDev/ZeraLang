@@ -1,13 +1,9 @@
-// src/repl.rs
-// Interactive REPL for Zeralang.
 
 use crate::{Environment, Stmt, Value, lex_and_parse};
 use std::io::{self, Write};
 
-/// Runs the interactive Read-Eval-Print Loop (REPL).
-/// Catches panics so runtime errors don't terminate the session.
 pub fn run() {
-    // Override the panic hook to suppress default Rust panic output in the REPL.
+
     let old_hook = std::panic::take_hook();
     std::panic::set_hook(Box::new(|_| {}));
 
@@ -31,7 +27,7 @@ pub fn run() {
         match io::stdin().read_line(&mut input) {
             Ok(0) => {
                 println!();
-                break; // EOF (Ctrl+D)
+                break;
             }
             Ok(_) => {}
             Err(e) => {
@@ -42,7 +38,6 @@ pub fn run() {
 
         let trimmed = input.trim();
 
-        // Exit commands only apply when at the top level
         if buffer.is_empty() {
             if trimmed == "exit" || trimmed == "quit" {
                 break;
@@ -57,7 +52,6 @@ pub fn run() {
         }
         buffer.push_str(&input);
 
-        // If input is syntactically incomplete, wait for the next line
         if is_incomplete(&buffer) {
             continue;
         }
@@ -68,11 +62,10 @@ pub fn run() {
         let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
             let ast = lex_and_parse(&source);
 
-            // Bare expressions evaluate and print their result, mimicking Python's REPL
             if ast.len() == 1 {
                 if let Stmt::ExprStmt(expr) = &ast[0] {
                     let val = env.evaluate_expression(expr);
-                    // Suppress printing Null for statements like function calls
+
                     if val != Value::Null {
                         println!("{}", val);
                     }
@@ -98,8 +91,6 @@ pub fn run() {
     println!("Goodbye!");
 }
 
-/// Heuristic check to determine if more input is needed.
-/// Counts unclosed braces and block keywords (`then`/`as` without `end`).
 fn is_incomplete(source: &str) -> bool {
     let mut braces = 0i32;
     let mut blocks = 0i32;

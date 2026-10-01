@@ -1,0 +1,9 @@
+define make_adder(n) {
+    set adder to func(x) {
+        return x + n
+    }
+    return adder
+}
+set add5 to make_adder(5)
+show add5(3)
+show add5(100)

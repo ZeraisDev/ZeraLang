@@ -1,0 +1,7 @@
+rows = [{"a": 1}, {"a": 2}]
+show length(rows)
+first = rows[0]
+show first["a"]
+nested = [[1, 2], [3, 4]]
+show nested[1][0]
+show push([], 7)

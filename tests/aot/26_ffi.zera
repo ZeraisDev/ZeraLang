@@ -1,0 +1,9 @@
+//! C-FFI through load_library. @FFI_LIB@ is replaced by the harness with the
+//! path of the compiled tests/aot/ffi_helper.c.
+//! expect: 15
+//! expect: 81
+//! expect: 7
+m = load_library("@FFI_LIB@")
+show m.zera_add_d(5, 10)
+show m.zera_square(9)
+show m.zera_add_d(3, 4)

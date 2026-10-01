@@ -1,0 +1,12 @@
+class Animal {
+    field name
+    construct(name) { self.name = name }
+    func describe() { return self.name + " says sound" }
+}
+class Dog extends Animal {
+    construct(name) { self.name = name }
+    func fetch() { return self.name + " fetches" }
+}
+d = Dog("Rex")
+show d.describe()
+show d.fetch()

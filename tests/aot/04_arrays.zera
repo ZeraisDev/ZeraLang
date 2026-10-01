@@ -1,0 +1,6 @@
+arr = [1, 2, 3]
+show length(arr)
+show arr[0]
+show arr[2]
+show push(arr, 9)
+show range(4)

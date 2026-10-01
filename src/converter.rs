@@ -1,10 +1,6 @@
-// src/converter.rs
-// The bi-modal converter — walks the AST and emits source code
-// in either read mode (English-like) or write mode (C-like).
 
 use crate::{Expr, Stmt, Token};
 
-/// Convert an AST to read-mode (English-like) source code.
 pub fn emit_read(stmts: &[Stmt]) -> String {
     let mut out = String::new();
     for stmt in stmts {
@@ -14,7 +10,6 @@ pub fn emit_read(stmts: &[Stmt]) -> String {
     out
 }
 
-/// Convert an AST to write-mode (C-like) source code.
 pub fn emit_write(stmts: &[Stmt]) -> String {
     let mut out = String::new();
     for stmt in stmts {
@@ -23,8 +18,6 @@ pub fn emit_write(stmts: &[Stmt]) -> String {
     }
     out
 }
-
-// ===== STATEMENT EMITTERS =====
 
 fn stmt_read(stmt: &Stmt, indent: usize) -> String {
     let ind = indent_str(indent);
@@ -107,7 +100,6 @@ fn stmt_read(stmt: &Stmt, indent: usize) -> String {
         Stmt::Break => format!("{}break", ind),
         Stmt::Continue => format!("{}continue", ind),
 
-        // ===== OOP: Class =====
         Stmt::Class(name, superclass, fields, constructor, methods) => {
             let mut out = format!("{}class {}", ind, name);
             if let Some(parent) = superclass {
@@ -226,7 +218,6 @@ fn stmt_write(stmt: &Stmt, indent: usize) -> String {
         Stmt::Break => format!("{}break", ind),
         Stmt::Continue => format!("{}continue", ind),
 
-        // ===== OOP: Class =====
         Stmt::Class(name, superclass, fields, constructor, methods) => {
             let mut out = format!("{}class {}", ind, name);
             if let Some(parent) = superclass {
@@ -277,8 +268,6 @@ fn block_write(stmts: &[Stmt], indent: usize) -> String {
     }
     out
 }
-
-// ===== EXPRESSION EMITTERS =====
 
 fn expr_read(expr: &Expr) -> String {
     match expr {
@@ -443,8 +432,6 @@ fn expr_write(expr: &Expr) -> String {
     }
 }
 
-// ===== PAREN WRAPPING (for correct precedence) =====
-
 fn wrap_parens_read(child: &Expr, parent_op: &Token, is_left: bool) -> String {
     let needs = if is_left {
         needs_parens_left(child, parent_op)
@@ -504,7 +491,6 @@ fn prec(op: &Token) -> u8 {
     }
 }
 
-// ===== OPERATOR MAPPING =====
 fn op_read(op: &Token) -> &'static str {
     match op {
         Token::Plus => "+",
@@ -542,8 +528,6 @@ fn op_write(op: &Token) -> &'static str {
         _ => "?",
     }
 }
-
-// ===== HELPERS =====
 
 fn escape_string(s: &str) -> String {
     let mut out = String::new();

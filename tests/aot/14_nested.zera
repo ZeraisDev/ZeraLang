@@ -1,0 +1,5 @@
+func outer(a) {
+    func inner(b) { return b * 2 }
+    return inner(a) + 1
+}
+show outer(5)

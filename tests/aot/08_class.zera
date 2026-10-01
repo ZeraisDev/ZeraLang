@@ -1,0 +1,7 @@
+class Animal {
+    field name
+    construct(name) { self.name = name }
+    func speak() { return self.name + " makes a sound" }
+}
+a = Animal("Rex")
+show a.speak()

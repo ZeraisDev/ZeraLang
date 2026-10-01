@@ -1,0 +1,6 @@
+show true
+show false
+show 1 < 2
+show !true
+show "a" == "b"
+show null

@@ -1,0 +1,10 @@
+//! `type` is declared as a builtin by the VM compiler but missing from
+//! VM::call_builtin, so the VM errors on it; pinned here as the oracle.
+//! expect: true
+//! expect: array
+//! expect: string
+//! expect: 7!
+show contains("hello world", "world")
+show type([1, 2])
+show type("x")
+show str(7) + "!"

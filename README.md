@@ -90,12 +90,45 @@ Run the built-in test suite:
 ./zeralang --test
 ```
 
+## ⚡ Execution Backends
+
+| Command | What it does |
+| --- | --- |
+| `./zeralang prog.zera` | Tree-walking interpreter |
+| `./zeralang --vm prog.zera` | Compiles to bytecode, then interprets it |
+| `./zeralang --jit prog.zera` | Cranelift, compiled and run in-process |
+| `./zeralang --aot prog.zera` | Cranelift, emits `zeralang_output.o` |
+
+### Ahead-of-time compilation
+
+`--aot` emits a native object file. Link it against the Rust runtime — the same
+`zera_*` functions the JIT calls — to produce a standalone executable:
+
+```bash
+cargo build --release
+./zeralang --aot prog.zera
+cc zeralang_output.o target/release/libzera_lang.a -o prog
+./prog
+```
+
+The object file carries only your program's machine code and its string
+literals; the value arena, closures, class dispatch, builtins and C-FFI all come
+from `libzera_lang.a`, so a compiled program stays in step with the VM and JIT
+feature-for-feature. Ship that archive alongside your `.o`.
+
+Verify a build against the reference semantics with:
+
+```bash
+scripts/aot_parity.sh
+```
+
 ## 🛣️ Roadmap
 - [x] Tree-Walking Interpreter
 - [x] OOP & Inheritance
 - [x] C-FFI & Standard Library (JSON, File I/O)
-- [ ] Complete Bytecode VM implementation
-- [ ] JIT Compilation (Cranelift)
+- [x] Bytecode VM
+- [x] JIT Compilation (Cranelift)
+- [x] AOT Compilation (Cranelift → object file)
 - [ ] LSP (Language Server Protocol) Support
 
 ## 📄 License

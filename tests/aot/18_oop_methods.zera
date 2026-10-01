@@ -1,0 +1,14 @@
+class Counter {
+    field count
+    construct(start) { self.count = start }
+    func bump(n) {
+        self.count = self.count + n
+        return self.count
+    }
+    func get() { return self.count }
+}
+c = Counter(10)
+show c.get()
+show c.bump(5)
+show c.bump(1)
+show c.get()

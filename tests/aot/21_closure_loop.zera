@@ -1,0 +1,9 @@
+set fns to []
+set i to 0
+while i < 3 {
+    set fns to push(fns, func() { return i })
+    set i to i + 1
+}
+show fns[0]()
+show fns[1]()
+show fns[2]()

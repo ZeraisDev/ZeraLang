@@ -1,0 +1,19 @@
+//! The VM cannot propagate a throw out of a function call into the caller's
+//! catch; the AOT and JIT both can. Expected output is pinned here rather than
+//! taken from the VM oracle.
+//! expect: zero
+//! expect: 100
+//! expect: 50
+//! expect: done
+func risky(x) {
+    if (x == 0) { throw "zero" }
+    return 100 / x
+}
+for k in range(3) {
+    try {
+        show risky(k)
+    } catch e {
+        show e
+    }
+}
+show "done"

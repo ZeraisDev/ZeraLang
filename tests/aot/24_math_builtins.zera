@@ -1,0 +1,14 @@
+//! abs/floor/ceil/round/sum/min/max are declared as builtins by the VM
+//! compiler but missing from VM::call_builtin, so the VM errors on them.
+//! The Rust runtime the AOT links against implements them.
+//! expect: 5
+//! expect: 3
+//! expect: 4
+//! expect: 2
+//! expect: 7
+func noop(x) { return x }
+show abs(-5)
+show floor(3.7)
+show ceil(3.2)
+show round(2.4)
+show max(3, 7)

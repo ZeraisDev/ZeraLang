@@ -1,0 +1,5 @@
+show 0 - 5
+show -7 / 2
+show 100 % 7
+show 10 + 3 * 2
+show (10 + 3) * 2

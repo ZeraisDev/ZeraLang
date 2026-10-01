@@ -1,0 +1,14 @@
+//! min/max/split/join/append_file/ask are declared as builtins but were
+//! missing from the runtime; pinned here because the VM has no oracle for them.
+//! expect: 3
+//! expect: 7
+//! expect: [a, b, c]
+//! expect: a-b-c
+//! expect: 5
+//! expect: a
+show min(3, 7)
+show max(3, 7)
+show split("a,b,c", ",")
+show join(["a", "b", "c"], "-")
+show max([1, 5, 2])
+show split("abc", "")[0]

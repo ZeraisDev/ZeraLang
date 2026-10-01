@@ -1,0 +1,9 @@
+a = "hello"
+b = " world"
+show a + b
+show upper(a)
+show lower("ABC")
+show length(a)
+show str(42)
+show "x" == "x"
+show "a" == "b"
