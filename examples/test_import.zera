@@ -1,0 +1,13 @@
+// test_import.zera
+// run from the same directory as test_import_lib.zera:
+//   zera --vm test_import.zera
+
+import "test_import_lib.zera"
+
+show LIB_GREETING
+show square(7)          // expect 49
+
+// Importing the same file again must be a silent no-op (cycle guard) —
+// not a redefinition, not a doubled side effect.
+import "test_import_lib.zera"
+show "imported twice, still fine"

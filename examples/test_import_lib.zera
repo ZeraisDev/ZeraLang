@@ -1,0 +1,8 @@
+// test_import_lib.zera — a small library module, meant to be imported
+// (not run directly)
+
+function square(n) {
+    return n * n
+}
+
+set LIB_GREETING to "hello from the imported module"

@@ -1,0 +1,16 @@
+// test_arrays_foreach.zera — BuildArray ordering + for-each with cached length
+// run with: zera --vm test_arrays_foreach.zera
+
+set arr to [10, 20, 30, 40, 50]
+show arr              // expect [10, 20, 30, 40, 50] — order preserved, not reversed
+
+set total to 0
+for each x in arr {
+    total += x
+}
+show total             // expect 150
+
+set names to ["a", "b", "c", "d"]
+for each n in names {
+    show n
+}

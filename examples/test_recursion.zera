@@ -1,0 +1,20 @@
+// test_recursion.zera — recursion correctness after the chunk-clone fix
+// run with: zera --vm test_recursion.zera
+
+define fib(n) {
+    if n < 2 {
+        return n
+    }
+    return fib(n - 1) + fib(n - 2)
+}
+
+show fib(20)          // expect 6765
+
+define factorial(n) {
+    if n < 2 {
+        return 1
+    }
+    return n * factorial(n - 1)
+}
+
+show factorial(10)    // expect 3628800
