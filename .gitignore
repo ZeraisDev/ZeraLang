@@ -1,7 +1,0 @@
-/target
-*.txt
-*.so
-*.dll
-*.dylib
-/site
-/Distribs
