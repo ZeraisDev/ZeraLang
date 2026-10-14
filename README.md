@@ -1,9 +1,9 @@
-# Zeralang 🚀
+# Zeralang 
 A bi-modal, dynamically-typed scripting language built entirely in Rust. 
 
 Zeralang combines the readability of English-like syntax with the power of low-level system access. Featuring full OOP, Try/Catch error handling, JSON parsing, and raw C-FFI to dynamically load and call functions from `.so`/`.dll`/`.dylib` libraries.
 
-## ✨ Features
+## Features
 - **Bi-Modal Syntax:** Write code in *Read Mode* (English-like) or *Write Mode* (C-like) and seamlessly convert between them.
 - **Full OOP:** Classes, fields, methods, inheritance, `self`, and method chaining.
 - **C-FFI (Foreign Function Interface):** Load native C libraries and call functions directly, handling pointers and memory.
@@ -12,7 +12,7 @@ Zeralang combines the readability of English-like syntax with the power of low-l
 - **Bytecode VM:** A work-in-progress stack-based Virtual Machine for blazing fast execution.
 - **Lambdas:** First-class functions and closures.
 
-## 🧬 Quick Example
+## Quick Example
 
 ```zera
 class Animal {
@@ -48,7 +48,7 @@ show dog.describe()
 show dog.fetch()
 ```
 
-## 🔗 C-FFI Example
+## C-FFI Example
 Zeralang can dynamically load C libraries and call functions without needing a compiler step.
 
 ```zera
@@ -59,7 +59,7 @@ show m.add(5, 10)
 show m.greet("Anant")
 ```
 
-## 📦 Installation & Building
+## Installation & Building
 Zeralang requires Rust to be installed.
 1. Clone the repository:
    ```bash
@@ -72,7 +72,7 @@ Zeralang requires Rust to be installed.
    ```
 3. The executable will be located at `target/release/zeralang` (or `zeralang.exe` on Windows).
 
-## 💻 Usage
+## Usage
 Run a Zeralang script:
 ```bash
 ./zeralang my_script.zera
@@ -90,7 +90,7 @@ Run the built-in test suite:
 ./zeralang --test
 ```
 
-## ⚡ Execution Backends
+## Execution Backends
 
 | Command | What it does |
 | --- | --- |
@@ -122,7 +122,7 @@ Verify a build against the reference semantics with:
 scripts/aot_parity.sh
 ```
 
-## 🛣️ Roadmap
+## Roadmap
 - [x] Tree-Walking Interpreter
 - [x] OOP & Inheritance
 - [x] C-FFI & Standard Library (JSON, File I/O)
@@ -131,5 +131,5 @@ scripts/aot_parity.sh
 - [x] AOT Compilation (Cranelift → object file)
 - [ ] LSP (Language Server Protocol) Support
 
-## 📄 License
+## License
 Zeralang is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
